@@ -1,40 +1,36 @@
 ﻿using System;
 using System.Linq;
 
-namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
+namespace Tavisca.Bootcamp.LanguageBasics.Exercise3
 {
     public static class Program
     {
-public static int kk(int[] l)
+public static int GetDish(int[] index)
 {
-    int j=l.Length;
-    for(int t=0;t<j;t++)
+    for(int t=0;t<index.Length;t++)
     {
-        if(l[t]!=0)
-        return l[t];
+        if(index[t]!=0)
+        return index[t];
     }
    return 9;
 }
-public static Boolean stringl(string y)
+public static Boolean stringOfLengthOne(string diet)
 {
-int h=y.Length;
-if(h==1)
+int length=diet.Length;
+if(length==1)
 return true;
 else
 return false;
 }
 
-public static Boolean onlyone(int[] ind,ref int gg)
+public static Boolean check_single_dish_found(int[] index,ref int output)
 {
 int count=0;
-int h=ind.Length;
-//Console.WriteLine(h);
-//Console.WriteLine(ind[0]);
-for(int y=0;y<h;y++)
+for(int y=0;y<index.Length;y++)
 {
-if(ind[y]!=0)
+if(index[y]!=0)
 {
-    gg=y;
+    output=y;
 count++;
 }
 }
@@ -44,65 +40,64 @@ else
 return false;
 }
 
-public static Boolean nextelement(string diet,int j) 
+public static Boolean Check_next_element_same(string diet,int index) 
 {
-if(diet.Length-1==j)
+if(diet.Length-1==index)
 {
     return true;
 }
-if( diet[j]==diet[j+1]+32 || diet[j]==diet[j+1]-32)
+if( diet[index]==diet[index+1]+32 || diet[index]==diet[index+1]-32)
 {
 return false;
 }
 else
 return true;
 }
-        public static void gett(int[] t,ref int[] ind,int y)
+
+        public static void getDiet(int[] nutrition,ref int[] index,int size_) // t index size
         {
               int max=Int32.MinValue;
               int min=Int32.MaxValue;
-              //Console.WriteLine(min+" "+max);
-              int k=t.Length;
-              if(y==1)//max
+              int length=nutrition.Length;
+              if(size_==1)
               {
-                for(int i=0;i<k;i++)
+                for(int i=0;i<length;i++)
               {
-              if( ind[i]!=0 && max<t[ind[i]-1])
-              max=t[ind[i]-1];
+              if( index[i]!=0 && max<nutrition[index[i]-1])
+              max=nutrition[index[i]-1];
               }
               min=max;
-            //  Console.WriteLine(max+"maxy");
+          
               }
               else
               {
-                for(int i=0;i<k;i++)
+                for(int i=0;i<length;i++)
               {
-              if(ind[i]!=0 && min>t[ind[i]-1])
-              min=t[ind[i]-1];
+              if(index[i]!=0 && min>nutrition[index[i]-1])
+              min=nutrition[index[i]-1];
               }
-              max=min;// for getting easy ..agge k liye 
+              max=min;
               }
-              int[] bb=new int[ind.Length];
-              for(int i=0;i<ind.Length;i++)
+              for(int i=0;i<index.Length;i++)
               {
-                  if(ind[i]==0)
+                  if(index[i]==0)
                   {
                   continue;
                   }
                   else
                   {
-                   if(t[ind[i]-1]==max)
+                   if(nutrition[index[i]-1]==max)
                    {
                     continue;
                    }
                    else
                    {
-                       ind[i]=0;
+                       index[i]=0;
                    }
                   }
                   
               }
-           // Console.WriteLine(max+"maxy");
+           
         }
 
         static void Main(string[] args)
@@ -138,97 +133,88 @@ return true;
             Console.WriteLine(result);
         }
 
-        public static int[] SelectMeals(int[] p, int[] c, int[] f, string[] diet)
+        public static int[] SelectMeals(int[] protein, int[] carbs, int[] fat, string[] dietPlans)
         {
-            
-                 int[] cal=new int[p.Length];
-             for(int i=0;i<p.Length;i++)
+             int[] result=new int[dietPlans.Length];  
+             int index_counter=0; 
+             int[] calorie=new int[protein.Length];
+             for(int i=0;i<protein.Length;i++)
              {
-                 cal[i]=p[i]*5+c[i]*5+f[i]*9;
-                
+                 calorie[i]=protein[i]*5+carbs[i]*5+fat[i]*9;   
              }
-             int[] yy=new int[diet.Length];
-int vv=0;
-for(int pl=0;pl<diet.Length;pl++)
-{
-    int d=0;
-    if(diet[pl]=="")
-    {
-    yy[vv++]=0;
-    }
-    else{
-    
-     Boolean flag=true;
-                int cs=0;
-                int[] ind=new int[p.Length];
-                for(int i=1;i<=p.Length;i++)
+             
+           for(int pl=0;pl<dietPlans.Length;pl++)
+            {
+             int inner_index=0; 
+              if(dietPlans[pl]=="")
+               {
+               result[index_counter++]=0;
+               }
+                 else{
+                Boolean go_ahead=true; 
+                int local_index=0;
+                int[] index_save=new int[protein.Length]; 
+                for(int i=1;i<=protein.Length;i++)
                 {
-                    ind[cs]=i;
-                    
-                   // Console.WriteLine(ind[cs]);
-                    cs++;
+                    index_save[local_index]=i;
+                    local_index++;
                 }
-while(flag)
+while(go_ahead)
 {
-switch(diet[pl][d]) //2
+switch(dietPlans[pl][inner_index])
 {
     case 'P':
-    gett(p,ref ind,1);
+    getDiet(protein,ref index_save,1);
     break;
     case 'p':
-    gett(p,ref ind,0);
+    getDiet(protein,ref index_save,0);
     break;
     case 'C':
-    gett(c,ref ind,1);
+    getDiet(carbs,ref index_save,1);
     break;
     case 'c':
-    gett(c,ref ind,0);
+    getDiet(carbs,ref index_save,0);
     break;
     case 'F':
-    gett(f,ref ind,1);
+    getDiet(fat,ref index_save,1);
     break;
     case 'f':
-    gett(f,ref ind,0);
+    getDiet(fat,ref index_save,0);
     break;
     case 'T':
-    gett(cal,ref ind,1);
+    getDiet(calorie,ref index_save,1);
     break;
     case 't':
-    gett(cal,ref ind,0);
+    getDiet(calorie,ref index_save,0);
     break;
 }
-flag=false;
 
-//Console.WriteLine("rajat"+ind[0]+""+ind[1]+""+ind[2]+""+ind[3]);
-
-int gg=0;
-if(stringl(diet[pl]) || onlyone(ind,ref gg) && nextelement(diet[pl],d) )
+int output=0; 
+if(stringOfLengthOne(dietPlans[pl]) || check_single_dish_found(index_save,ref output) && Check_next_element_same(dietPlans[pl],inner_index) )
 {
-    if(stringl(diet[pl])) // this is for getiing gg if or wali first condition passed
+    if(stringOfLengthOne(dietPlans[pl])) 
     {
-        onlyone(ind,ref gg);
+        check_single_dish_found(index_save,ref output);
     }
-         yy[vv++]=gg;
-flag=false;
+result[index_counter++]=output;
+go_ahead=false;
 }
 else
 {
- if(diet[pl].Length-1==d)
+ if(dietPlans[pl].Length-1==inner_index)
  {
-     yy[vv++]=kk(ind)-1;
-     //Console.WriteLine(+"final");
- flag=false;
+     result[index_counter++]=GetDish(index_save)-1;
+    
+ go_ahead=false;
  } 
  else
-    flag=true;
+    go_ahead=true;
 }
-d++;
-//Console.WriteLine("hellogggggggg");
-
+inner_index++;
 }
 }
 }
-return yy;
+return result;
         }
     }
 }
